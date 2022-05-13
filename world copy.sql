@@ -23,10 +23,10 @@ CREATE TABLE db_abilities (
 
 CREATE TABLE db_types (
     id_type integer NOT NULL,
+    id_type_relation integer NOT NULL,
     name text NOT NULL,
-    damage_relations text,
-    type_relation integer,
-    PRIMARY KEY (id_type)
+    damage_relations json,
+    PRIMARY KEY (id_type,id_type_relation),
 );
 
 CREATE TABLE db_vinc_pokemon_ability(
@@ -100,13 +100,12 @@ ALTER TABLE ONLY db_types
     ADD CONSTRAINT type_pkey PRIMARY KEY (id_type);
 
 ALTER TABLE ONLY db_vinc_pokemon_ability
-    ADD CONSTRAINT vinc_pokemon_fkey FOREIGN KEY (id_pokemon) REFERENCES db_pokemon(id_pokemon);
-    ADD CONSTRAINT vinc_ability_fkey FOREIGN KEY (id_ability) REFERENCES db_abilities(id_ability);
-
+    ADD CONSTRAINT vinc_pokemon_fkey FOREIGN KEY (id_pokemon) REFERENCES db_pokemon(id_pokemon) ON DELETE CASCADE;
+    ADD CONSTRAINT vinc_ability_fkey FOREIGN KEY (id_ability) REFERENCES db_abilities(id_ability) ON DELETE CASCADE;
 
 ALTER TABLE ONLY db_vinc_pokemon_type
-    ADD CONSTRAINT vinc_pokemon_fkey FOREIGN KEY (id_pokemon) REFERENCES db_pokemon(id_pokemon);
-    ADD CONSTRAINT vinc_type_fkey FOREIGN KEY (id_type) REFERENCES db_types(id_type);
+    ADD CONSTRAINT vinc_pokemon_fkey FOREIGN KEY (id_pokemon) REFERENCES db_pokemon(id_pokemon) ON DELETE CASCADE;
+    ADD CONSTRAINT vinc_type_fkey FOREIGN KEY (id_type) REFERENCES db_types(id_type) ON DELETE CASCADE;
 
 COMMIT;
 
